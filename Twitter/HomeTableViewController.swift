@@ -19,7 +19,7 @@ class HomeTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadTweets()
+        self.loadTweets()
         
         myRefrshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = myRefrshControl
@@ -27,7 +27,7 @@ class HomeTableViewController: UITableViewController {
     
     @objc func loadTweets(){
         
-        numberOfTweet = 20
+        numberOfTweet = 23
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
         let myParams = ["count": numberOfTweet]
         TwitterAPICaller.client?.getDictionariesRequest(url: myUrl , parameters: myParams, success: { (tweets: [NSDictionary]) in
@@ -47,7 +47,7 @@ class HomeTableViewController: UITableViewController {
     
     func loadMoreTweets(){
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        numberOfTweet = numberOfTweet + 20
+        numberOfTweet = numberOfTweet + 23
         let myParams = ["count":numberOfTweet]
         TwitterAPICaller.client?.getDictionariesRequest(url: myUrl , parameters: myParams, success: { (tweets: [NSDictionary]) in
             self.tweetArray.removeAll()
@@ -63,7 +63,7 @@ class HomeTableViewController: UITableViewController {
     }
     
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == tweetArray.count{
             loadMoreTweets()
         }
@@ -81,7 +81,7 @@ class HomeTableViewController: UITableViewController {
         let user = tweetArray[indexPath.row]["user"] as! NSDictionary
         
         cell.userNameLabel.text = user["name"] as? String
-        cell.tweetContent.text = tweetArray[indexPath.row]["text"] as! String
+        cell.tweetContent.text = tweetArray[indexPath.row]["text"] as? String
         
         let imageUrl = URL(string: (user["profile_image_url_https"] as? String)!)
         let data = try? Data(contentsOf: imageUrl!)
