@@ -46,7 +46,7 @@ class TweetCellTableViewCell: UITableViewCell {
             retweetButton.isEnabled = false
         }
         else{
-            favButton.setImage(UIImage(named: "retweet-icon"), for: UIControl.State.normal)
+            retweetButton.setImage(UIImage(named: "retweet-icon"), for: UIControl.State.normal)
             retweetButton.isEnabled = true
         }
     }
